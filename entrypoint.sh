@@ -17,8 +17,13 @@ passwd -l root >/dev/null 2>&1 || true
 echo "$SSH_USER ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$SSH_USER
 chmod 440 /etc/sudoers.d/$SSH_USER
 
-echo "xfce4-session" > /home/$SSH_USER/.xsession
+echo "startxfce4" > /home/$SSH_USER/.xsession
+chmod +x /home/$SSH_USER/.xsession
 chown $SSH_USER:$SSH_USER /home/$SSH_USER/.xsession
+
+mkdir -p /run/user/1000
+chown -R $SSH_USER:$SSH_USER /run/user/1000
+chmod 700 /run/user/1000
 
 if [ -n "$PUBLIC_KEY" ]; then
     mkdir -p /home/$SSH_USER/.ssh

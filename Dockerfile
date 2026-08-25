@@ -4,7 +4,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     SSH_USER=ubuntu \
     SSH_PORT=22 \
     RDP_PORT=3389 \
-    RDP_PASSWORD=ubuntu \
+    RDP_PASSWORD=123 \
     PUBLIC_KEY="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMWzSUJP9M/CdbyFJrvmcrVe83+4givFPry52NXl8Jxb Hrv Clan"
 
 RUN apt-get update && \
@@ -29,6 +29,8 @@ RUN apt-get update && \
         xfce4 \
         xfce4-goodies \
         xrdp \
+        xorgxrdp \
+        xserver-xorg-core \
         dbus-x11 \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /var/run/sshd /var/run/xrdp \
