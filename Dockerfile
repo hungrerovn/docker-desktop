@@ -22,6 +22,9 @@ RUN apt-get update && \
         openssl \
         vim \
         xfce4 \
+        xfce4-terminal
+        tango-icon-theme \
+        gnome-icon-theme \
         xrdp \
         xorgxrdp \
         xserver-xorg-core \
