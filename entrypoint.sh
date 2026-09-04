@@ -19,24 +19,11 @@ chmod 440 /etc/sudoers.d/$SSH_USER
 
 cat > /home/$SSH_USER/.xsession << 'EOF'
 #!/bin/bash
-exec dbus-launch --exit-with-session startxfce4
+rm -f "$HOME/.ICEauthority" "$HOME/.Xauthority"
+exec dbus-run-session -- startxfce4
 EOF
 chmod +x /home/$SSH_USER/.xsession
 chown $SSH_USER:$SSH_USER /home/$SSH_USER/.xsession
-
-mkdir -p /home/$SSH_USER/.config/gtk-3.0
-cat > /home/$SSH_USER/.config/gtk-3.0/settings.ini << 'EOF'
-[Settings]
-gtk-icon-theme-name=Humanity
-gtk-theme-name=Adwaita
-EOF
-
-cat > /home/$SSH_USER/.gtkrc-2.0 << 'EOF'
-gtk-icon-theme-name="Humanity"
-gtk-theme-name="Adwaita"
-EOF
-
-chown -R $SSH_USER:$SSH_USER /home/$SSH_USER/.config /home/$SSH_USER/.gtkrc-2.0
 
 mkdir -p /run/user/1000
 chown -R $SSH_USER:$SSH_USER /run/user/1000
