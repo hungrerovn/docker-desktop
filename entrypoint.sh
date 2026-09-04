@@ -25,6 +25,18 @@ EOF
 chmod +x /home/$SSH_USER/.xsession
 chown $SSH_USER:$SSH_USER /home/$SSH_USER/.xsession
 
+mkdir -p /home/$SSH_USER/Desktop \
+         /home/$SSH_USER/Downloads \
+         /home/$SSH_USER/Documents \
+         /home/$SSH_USER/Pictures \
+         /home/$SSH_USER/Music \
+         /home/$SSH_USER/Videos \
+         /home/$SSH_USER/Public \
+         /home/$SSH_USER/Templates
+chown -R $SSH_USER:$SSH_USER /home/$SSH_USER/Desktop /home/$SSH_USER/Downloads \
+         /home/$SSH_USER/Documents /home/$SSH_USER/Pictures /home/$SSH_USER/Music \
+         /home/$SSH_USER/Videos /home/$SSH_USER/Public /home/$SSH_USER/Templates
+
 mkdir -p /run/user/1000
 chown -R $SSH_USER:$SSH_USER /run/user/1000
 chmod 700 /run/user/1000
