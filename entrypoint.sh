@@ -17,9 +17,26 @@ passwd -l root >/dev/null 2>&1 || true
 echo "$SSH_USER ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$SSH_USER
 chmod 440 /etc/sudoers.d/$SSH_USER
 
-echo "startxfce4" > /home/$SSH_USER/.xsession
+cat > /home/$SSH_USER/.xsession << 'EOF'
+#!/bin/bash
+exec dbus-launch --exit-with-session startxfce4
+EOF
 chmod +x /home/$SSH_USER/.xsession
 chown $SSH_USER:$SSH_USER /home/$SSH_USER/.xsession
+
+mkdir -p /home/$SSH_USER/.config/gtk-3.0
+cat > /home/$SSH_USER/.config/gtk-3.0/settings.ini << 'EOF'
+[Settings]
+gtk-icon-theme-name=Humanity
+gtk-theme-name=Adwaita
+EOF
+
+cat > /home/$SSH_USER/.gtkrc-2.0 << 'EOF'
+gtk-icon-theme-name="Humanity"
+gtk-theme-name="Adwaita"
+EOF
+
+chown -R $SSH_USER:$SSH_USER /home/$SSH_USER/.config /home/$SSH_USER/.gtkrc-2.0
 
 mkdir -p /run/user/1000
 chown -R $SSH_USER:$SSH_USER /run/user/1000
