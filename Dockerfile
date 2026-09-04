@@ -29,13 +29,17 @@ RUN apt-get update && \
         xorgxrdp \
         xserver-xorg-core \
         dbus-x11 \
-    && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /var/run/sshd /var/run/xrdp \
     && adduser xrdp ssl-cert
 
 COPY entrypoint.sh /usr/local/bin/init.sh
 COPY supervisord.conf /etc/supervisor/conf.d/supervisor.conf
 RUN chmod +x /usr/local/bin/init.sh
+RUN wget -q -O /tmp/google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends /tmp/google-chrome.deb \
+    && rm -f /tmp/google-chrome.deb \
+    && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 22 3389
 
