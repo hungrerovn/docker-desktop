@@ -18,16 +18,10 @@ RUN apt-get update && \
         curl \
         tini \
         wget \
-        net-tools \
-        iputils-ping \
         ca-certificates \
         openssl \
-        git \
         vim \
-        unzip \
-        zip \
         xfce4 \
-        xfce4-goodies \
         xrdp \
         xorgxrdp \
         xserver-xorg-core \
