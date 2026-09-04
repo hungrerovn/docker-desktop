@@ -29,6 +29,7 @@ RUN apt-get update && \
         xorgxrdp \
         xserver-xorg-core \
         dbus-x11 \
+    && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /var/run/sshd /var/run/xrdp \
     && adduser xrdp ssl-cert
 
