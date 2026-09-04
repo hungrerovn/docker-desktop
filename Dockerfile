@@ -40,7 +40,7 @@ RUN wget -q -O /tmp/google-chrome.deb https://dl.google.com/linux/direct/google-
     && apt-get install -y --no-install-recommends /tmp/google-chrome.deb \
     && rm -f /tmp/google-chrome.deb \
     && rm -rf /var/lib/apt/lists/* \
-    sed -i 's|^Exec=exo-open|Exec=google-chrome --no-sandbox %u|g' /usr/share/applications/xfce4-web-browser.desktop
+    && sed -i 's|^Exec=exo-open|Exec=google-chrome --no-sandbox %u|g' /usr/share/applications/xfce4-web-browser.desktop
 
 EXPOSE 22 3389
 
