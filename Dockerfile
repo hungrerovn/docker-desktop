@@ -6,7 +6,8 @@ ENV SSH_USER=ubuntu \
      RDP_PASSWORD=123 \
      PUBLIC_KEY="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMWzSUJP9M/CdbyFJrvmcrVe83+4givFPry52NXl8Jxb Hrv Clan"
 
-RUN apk add --no-cache \
+RUN sed -i 's/#http/http/g' /etc/apk/repositories \
+    apk update && apk add --no-cache \
     vim \
     bash \
     sudo \
@@ -29,13 +30,10 @@ RUN apk add --no-cache \
     xorg-server \
     xfce4-terminal \
     ca-certificates \
-    faenza-icon-theme \
-    --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing \
-    --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community \
-    --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main
+    faenza-icon-theme 
 
 COPY entrypoint.sh /usr/local/bin/init.sh
-COPY supervisor.conf /etc/supervisor/supervisord.conf
+COPY supervisord.conf /etc/supervisor/supervisord.conf
 RUN chmod +x /usr/local/bin/init.sh
 EXPOSE 22 3389
 
