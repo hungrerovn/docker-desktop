@@ -24,7 +24,7 @@ RUN apt-get update && \
         vim \
         icewm \
         xfce4-terminal \
-        tango-icon-theme \
+        gnome-icon-theme \
         xrdp \
         xorgxrdp \
         xserver-xorg-core \
