@@ -20,7 +20,8 @@ chmod 440 /etc/sudoers.d/$SSH_USER
 cat > /home/$SSH_USER/.xsession << 'EOF'
 #!/bin/bash
 rm -f "$HOME/.ICEauthority" "$HOME/.Xauthority"
-exec dbus-run-session -- startxfce4
+export XDG_RUNTIME_DIR=/run/user/1000
+exec dbus-run-session -- icewm-session
 EOF
 chmod +x /home/$SSH_USER/.xsession
 chown $SSH_USER:$SSH_USER /home/$SSH_USER/.xsession
@@ -40,6 +41,8 @@ chown -R $SSH_USER:$SSH_USER /home/$SSH_USER/Desktop /home/$SSH_USER/Downloads \
 mkdir -p /run/user/1000
 chown -R $SSH_USER:$SSH_USER /run/user/1000
 chmod 700 /run/user/1000
+mkdir -p /run/dbus
+chown messagebus:messagebus /run/dbus 2>/dev/null || true
 
 if [ -n "$PUBLIC_KEY" ]; then
     mkdir -p /home/$SSH_USER/.ssh
@@ -56,8 +59,12 @@ sed -i 's/^#\?PubkeyAuthentication.*/PubkeyAuthentication yes/' /etc/ssh/sshd_co
 sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin prohibit-password/' /etc/ssh/sshd_config
 sed -i 's/^#\?KbdInteractiveAuthentication.*/KbdInteractiveAuthentication no/' /etc/ssh/sshd_config
 
-sed -i "s/port=3389/port=$RDP_PORT/g" /etc/xrdp/xrdp.ini
-rm -f /var/run/xrdp/xrdp.pid /var/run/xrdp/xrdp-sesman.pid
+sed -i "/^\[Globals\]/,/^\[/{s/^port=.*/port=$RDP_PORT/}" /etc/xrdp/xrdp.ini
+rm -f /var/run/xrdp/xrdp*.pid \
+      /var/run/xrdp/xrdp_display_socket_* \
+      /var/run/xrdp/sesman.sock \
+      /tmp/.X*-lock \
+      /tmp/.X11-unix/X*
 
 ssh-keygen -A
 exec /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
