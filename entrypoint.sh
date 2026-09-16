@@ -19,7 +19,8 @@ chmod 440 /etc/sudoers.d/$SSH_USER
 
 cat > /home/$SSH_USER/.xsession << 'EOF'
 #!/bin/bash
-rm -f "$HOME/.ICEauthority" "$HOME/.Xauthority"
+rm -f "$HOME/.ICEauthority"
+
 export XDG_RUNTIME_DIR=/run/user/1000
 exec dbus-run-session -- icewm-session
 EOF
