@@ -18,6 +18,7 @@ RUN apt-get update && \
         curl \
         tini \
         wget \
+        xauth \
         ca-certificates \
         openssl \
         vim \
