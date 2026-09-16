@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-ENV SSH_USER=ubuntu \
+ENV SSH_USER=alpine \
      SSH_PORT=22 \
      RDP_PORT=3389 \
      RDP_PASSWORD=123 \
