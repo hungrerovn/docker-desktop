@@ -6,7 +6,7 @@ ENV SSH_USER=ubuntu \
      RDP_PASSWORD=123 \
      PUBLIC_KEY="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMWzSUJP9M/CdbyFJrvmcrVe83+4givFPry52NXl8Jxb Hrv Clan"
 
-RUN sed -i 's/#http/http/g' /etc/apk/repositories \
+RUN sed -i 's/#http/http/g' /etc/apk/repositories && \
     apk update && apk add --no-cache \
     vim \
     bash \
