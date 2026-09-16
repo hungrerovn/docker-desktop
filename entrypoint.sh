@@ -1,31 +1,27 @@
 #!/bin/bash
 set -e
 
-SSH_USER=${SSH_USER:-ubuntu}
+SSH_USER=${SSH_USER:-alpine}
 SSH_PORT=${SSH_PORT:-22}
 RDP_PORT=${RDP_PORT:-3389}
-RDP_PASSWORD=${RDP_PASSWORD:-ubuntu}
+RDP_PASSWORD=${RDP_PASSWORD:-alpine}
 
 if ! id "$SSH_USER" &>/dev/null; then
     useradd -m -s /bin/bash "$SSH_USER"
-    usermod -aG sudo "$SSH_USER"
+    usermod -aG wheel "$SSH_USER"
 fi
-
 echo "$SSH_USER:$RDP_PASSWORD" | chpasswd
 passwd -l root >/dev/null 2>&1 || true
-
 echo "$SSH_USER ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$SSH_USER
-chmod 440 /etc/sudoers.d/$SSH_USER
+chmod 0440 /etc/sudoers.d/$SSH_USER
 
-cat > /home/$SSH_USER/.xsession << 'EOF'
-#!/bin/bash
+cat > /home/$SSH_USER/.xinitrc << 'EOF'
+#!/bin/sh
 rm -f "$HOME/.ICEauthority"
-
-export XDG_RUNTIME_DIR=/run/user/1000
 exec dbus-run-session -- icewm-session
 EOF
-chmod +x /home/$SSH_USER/.xsession
-chown $SSH_USER:$SSH_USER /home/$SSH_USER/.xsession
+chmod +x /home/$SSH_USER/.xinitrc
+chown $SSH_USER:$SSH_USER /home/$SSH_USER/.xinitrc
 
 mkdir -p /home/$SSH_USER/Desktop \
          /home/$SSH_USER/Downloads \
@@ -42,8 +38,8 @@ chown -R $SSH_USER:$SSH_USER /home/$SSH_USER/Desktop /home/$SSH_USER/Downloads \
 mkdir -p /run/user/1000
 chown -R $SSH_USER:$SSH_USER /run/user/1000
 chmod 700 /run/user/1000
-mkdir -p /run/dbus
-chown messagebus:messagebus /run/dbus 2>/dev/null || true
+mkdir -p /run/dbus /var/log/supervisor /var/run/sshd /var/run/xrdp
+chown messagebus:messagebus /run/dbus
 
 if [ -n "$PUBLIC_KEY" ]; then
     mkdir -p /home/$SSH_USER/.ssh
